@@ -134,6 +134,11 @@ export default function TypingTestPage() {
               <div className="flex items-center gap-1.5 text-lg font-bold" style={{ color: timeLeft < 10 ? '#ef4444' : 'var(--foreground)' }}>
                 <Clock className="h-5 w-5" /> {timeLeft}s
               </div>
+              {isRunning && (
+                <div className="h-2 w-32 overflow-hidden rounded-full bg-secondary sm:w-48">
+                  <div className="h-full rounded-full bg-primary transition-all duration-1000" style={{ width: `${(timeLeft / duration) * 100}%` }} />
+                </div>
+              )}
             </div>
             {!isFinished && (
               <button onClick={() => { setIsRunning(false); startTest(); }} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
@@ -143,17 +148,20 @@ export default function TypingTestPage() {
           </div>
 
           <div className="mb-4 rounded-xl border border-border bg-card p-6">
-            <div className="mb-4 text-lg leading-relaxed tracking-wide">
+            <div className="mb-4 text-lg leading-relaxed tracking-wide font-mono">
               {text.split('').map((char, i) => (
-                <span key={i} className={`${getCharClass(i)} transition-colors`}>
+                <span key={i} className={`${getCharClass(i)} transition-colors ${i === userInput.length && isRunning ? 'animate-pulse border-l-2 border-primary' : ''}`}>
                   {char}
                 </span>
               ))}
             </div>
             {isRunning && (
+              <>
+                <p className="mb-2 text-xs text-muted-foreground">Tab + Enter para reiniciar</p>
               <textarea ref={inputRef} value={userInput} onChange={handleInput} onPaste={e => e.preventDefault()}
                 className="h-24 w-full rounded-lg border border-border bg-background p-3 font-mono text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                 placeholder="Empieza a escribir aquí..." />
+              </>
             )}
           </div>
 
