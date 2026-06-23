@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { isValidLocale, getDictionary } from '@/lib/i18n';
 import type { Locale } from '@/lib/types';
-import { HomePageClient } from './home-page-client';
+import TypingTestPage from './home-page-client';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -13,6 +13,5 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (!isValidLocale(locale)) return null;
-  const dict = getDictionary(locale as Locale);
-  return <HomePageClient locale={locale as Locale} dict={dict} />;
+  return <TypingTestPage />;
 }
